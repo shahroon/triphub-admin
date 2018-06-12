@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
 import { Badge, DropdownItem, DropdownMenu, DropdownToggle, Nav, NavItem, NavLink } from 'reactstrap';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { AppAsideToggler, AppHeaderDropdown, AppNavbarBrand, AppSidebarToggler } from '@coreui/react';
 import logo from '../../assets/img/brand/logo.svg'
 import sygnet from '../../assets/img/brand/sygnet.svg'
+import { authAPI } from '../../modules/auth';
 
 const propTypes = {
   children: PropTypes.node,
@@ -13,6 +15,9 @@ const propTypes = {
 const defaultProps = {};
 
 class DefaultHeader extends Component {
+  callLogout() {
+    authAPI.signout();
+  }
   render() {
 
     // eslint-disable-next-line
@@ -29,13 +34,22 @@ class DefaultHeader extends Component {
 
         <Nav className="d-md-down-none" navbar>
           <NavItem className="px-3">
-            <NavLink href="/">Dashboard</NavLink>
+            <NavLink tag={Link} to="/">Dashboard</NavLink>
           </NavItem>
           <NavItem className="px-3">
-            <NavLink href="#">Users</NavLink>
+            <NavLink tag={Link} to="/agents">Agents</NavLink>
           </NavItem>
           <NavItem className="px-3">
-            <NavLink href="#">Settings</NavLink>
+            <NavLink tag={Link} to="/trips">Trips</NavLink>
+          </NavItem>
+          <NavItem className="px-3">
+            <NavLink tag={Link} to="/travellers">Travellers</NavLink>
+          </NavItem>
+          <NavItem className="px-3">
+            <NavLink tag={Link} to="/hotels">Hotels</NavLink>
+          </NavItem>
+          <NavItem className="px-3">
+            <NavLink tag={Link} to="/settings">Settings</NavLink>
           </NavItem>
         </Nav>
         <Nav className="ml-auto" navbar>
@@ -65,7 +79,7 @@ class DefaultHeader extends Component {
               <DropdownItem><i className="fa fa-file"></i> Projects<Badge color="primary">42</Badge></DropdownItem>
               <DropdownItem divider />
               <DropdownItem><i className="fa fa-shield"></i> Lock Account</DropdownItem>
-              <DropdownItem><i className="fa fa-lock"></i> Logout</DropdownItem>
+              <DropdownItem onClick={this.callLogout}><i className="fa fa-lock"></i> Logout</DropdownItem>
             </DropdownMenu>
           </AppHeaderDropdown>
         </Nav>

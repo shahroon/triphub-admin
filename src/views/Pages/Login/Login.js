@@ -1,11 +1,45 @@
 import React, { Component } from 'react';
-import { Button, Card, CardBody, CardGroup, Col, Container, Input, InputGroup, InputGroupAddon, InputGroupText, Row } from 'reactstrap';
+import authAPI from '../../../modules/auth';
+import { Button, 
+  Card, CardBody, CardGroup, Col, Container, 
+  Input, InputGroup, InputGroupAddon, InputGroupText, Row
+} from 'reactstrap';
 
 class Login extends Component {
+  constructor(props){
+    super(props);
+
+    this.state = {
+      email: "",
+      password: ""
+    }
+
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+  }
+
+  validateForm() {
+    return this.state.email.length > 0 && this.state.password.length > 0;
+  }
+
+  handleChange = event => {
+    this.setState({
+      [event.target.id]: event.target.value 
+    }) 
+  }
+
+  handleSubmit = event => {
+    event.preventDefault();
+    let email = document.getElementById('email').value;
+    let password = document.getElementById('password').value;
+    authAPI.authenticate(email,password)
+    } 
+
   render() {
     return (
       <div className="app flex-row align-items-center">
         <Container>
+          <form  onSubmit={this.handleSubmit}>
           <Row className="justify-content-center">
             <Col md="8">
               <CardGroup>
@@ -19,7 +53,7 @@ class Login extends Component {
                           <i className="icon-user"></i>
                         </InputGroupText>
                       </InputGroupAddon>
-                      <Input type="text" placeholder="Username" />
+                      <Input autoFocus id="email" type="email" placeholder="Email" />
                     </InputGroup>
                     <InputGroup className="mb-4">
                       <InputGroupAddon addonType="prepend">
@@ -27,7 +61,7 @@ class Login extends Component {
                           <i className="icon-lock"></i>
                         </InputGroupText>
                       </InputGroupAddon>
-                      <Input type="password" placeholder="Password" />
+                      <Input type="password" id="password" placeholder="Password" />
                     </InputGroup>
                     <Row>
                       <Col xs="6">
@@ -52,6 +86,7 @@ class Login extends Component {
               </CardGroup>
             </Col>
           </Row>
+          </form>
         </Container>
       </div>
     );
